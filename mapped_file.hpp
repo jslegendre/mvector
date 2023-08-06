@@ -13,7 +13,7 @@
 struct mapped_file {
 public:
     mapped_file(const std::string& path, off_t offset = 0)
-    : _path(path), _offset(offset) {
+    : _path(path), _offset(offset), _ref_count(0), _handle(-1) {
         struct stat st;
         if (stat(_path.c_str(), &st) != 0) {
             FILE *ff = fopen(path.c_str(), "w+b");
@@ -90,12 +90,12 @@ public:
     }
 
 private:
-    std::atomic<int> _ref_count = 0;
+    std::atomic<int> _ref_count;
     const std::string _path;
     size_t _size = 0;
     off_t _offset = 0;
     char *_data = nullptr;
-    std::atomic<int> _handle = -1;
+    std::atomic<int> _handle;
     
     inline int handle() {
         return std::atomic_load_explicit(&_handle, std::memory_order_acquire);

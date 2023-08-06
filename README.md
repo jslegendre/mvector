@@ -1,5 +1,5 @@
 # mvector
-Clang compatible file-backed std::vectors 
+File-backed std::vectors for Clang and G++
 
 ## Overview
 mvector is a C++ library that provides a file-backed version of std::vector that is compatible with both GCC and Clang. It allows you to save and restore vectors from disk, making it convenient for situations where you need persistent data storage.

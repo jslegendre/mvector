@@ -14,6 +14,11 @@ public:
     typedef T* pointer;
     typedef const T* const_pointer;
     
+    template<typename _Tp1>
+    struct rebind {
+        typedef mmap_allocator<_Tp1> other;
+    };
+    
     mmap_allocator(const std::string& path, off_t offset = 0)
     : _mmfile(new mapped_file(path, offset)) { }
     
@@ -39,7 +44,7 @@ public:
     
     template <class... _Args>
     void construct(pointer __p, _Args&&... __args) {
-        if constexpr (sizeof...(__args) <= 0) {
+        if (sizeof...(__args) <= 0) {
             return;
         }
         
